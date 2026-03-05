@@ -32,6 +32,7 @@ class Confetti {
     stop() {
         this.particles = [];
         this.isAnimating = false;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     
     createParticle() {
