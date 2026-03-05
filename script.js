@@ -17,7 +17,15 @@ const elements = {
     mistakesDisplay: document.getElementById('mistakes'),
     progressBar: document.getElementById('progress-bar'),
     lessonSelect: document.getElementById('lesson-select'),
-    restartBtn: document.getElementById('restart-btn')
+    restartBtn: document.getElementById('restart-btn'),
+    
+    // Modal elements
+    modalOverlay: document.getElementById('completion-modal'),
+    modalWpm: document.getElementById('modal-wpm'),
+    modalAcc: document.getElementById('modal-acc'),
+    modalMistakes: document.getElementById('modal-mistakes'),
+    nextLessonBtn: document.getElementById('next-lesson-btn'),
+    retryLessonBtn: document.getElementById('retry-lesson-btn')
 };
 
 function init() {
@@ -38,6 +46,38 @@ function setupEventListeners() {
         startLesson(state.lessonId);
         e.target.blur(); // Remove focus
     });
+    
+    // Modal buttons
+    elements.nextLessonBtn.addEventListener('click', () => {
+        hideModal();
+        let nextLessonId = state.lessonId + 1;
+        const options = Array.from(elements.lessonSelect.options).map(o => parseInt(o.value));
+        if (options.includes(nextLessonId)) {
+            elements.lessonSelect.value = nextLessonId;
+            startLesson(nextLessonId);
+        } else {
+            startLesson(state.lessonId); // Restart current if it's the last one
+        }
+    });
+    
+    elements.retryLessonBtn.addEventListener('click', () => {
+        hideModal();
+        startLesson(state.lessonId);
+    });
+}
+
+function showModal() {
+    elements.modalWpm.textContent = `${elements.wpmDisplay.textContent} WPM`;
+    elements.modalAcc.textContent = elements.accuracyDisplay.textContent;
+    elements.modalMistakes.textContent = state.mistakes;
+    elements.modalOverlay.classList.add('show');
+}
+
+function hideModal() {
+    elements.modalOverlay.classList.remove('show');
+    if (typeof confetti !== 'undefined') {
+        confetti.stop();
+    }
 }
 
 function startLesson(lessonId) {
@@ -158,17 +198,10 @@ function handleKeyDown(e) {
             state.isActive = false;
             updateStats();
             setTimeout(() => {
-                alert(`Lesson Completed!\n\nWPM: ${elements.wpmDisplay.textContent}\nAccuracy: ${elements.accuracyDisplay.textContent}\nMistakes: ${state.mistakes}`);
-                
-                // Go to next lesson if available
-                let nextLessonId = state.lessonId + 1;
-                const options = Array.from(elements.lessonSelect.options).map(o => parseInt(o.value));
-                if (options.includes(nextLessonId)) {
-                    elements.lessonSelect.value = nextLessonId;
-                    startLesson(nextLessonId);
-                } else {
-                    startLesson(state.lessonId); // Restart current if it's the last one
+                if (typeof confetti !== 'undefined') {
+                    confetti.start();
                 }
+                showModal();
             }, 100);
         }
     } else {

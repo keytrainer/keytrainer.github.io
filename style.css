@@ -314,3 +314,110 @@ button:active {
     25% { transform: translateX(-4px) translateY(4px); }
     75% { transform: translateX(4px) translateY(4px); }
 }
+/* MODAL AND CONFETTI STYLES */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    width: 400px;
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-content h2 {
+    color: var(--primary-dark);
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+.modal-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.modal-stat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-stat-label {
+    color: #718096;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-stat-value {
+    color: var(--text-color);
+    font-size: 1.8em;
+    font-weight: 800;
+}
+
+.modal-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+}
+
+.secondary-btn {
+    background: white;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+    box-shadow: none;
+}
+
+.secondary-btn:hover {
+    background: #f7fafc;
+    color: var(--text-color);
+    box-shadow: none;
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 90;
+}
+

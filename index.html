@@ -52,8 +52,36 @@
             </section>
         </div>
     </div>
+
+    <!-- Modal for Lesson Completion -->
+    <div id="completion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>🎉 Lesson Completed! 🎉</h2>
+            <div class="modal-stats">
+                <div class="modal-stat-box">
+                    <span class="modal-stat-label">Speed</span>
+                    <span id="modal-wpm" class="modal-stat-value">0 WPM</span>
+                </div>
+                <div class="modal-stat-box">
+                    <span class="modal-stat-label">Accuracy</span>
+                    <span id="modal-acc" class="modal-stat-value">100%</span>
+                </div>
+                <div class="modal-stat-box">
+                    <span class="modal-stat-label">Mistakes</span>
+                    <span id="modal-mistakes" class="modal-stat-value">0</span>
+                </div>
+            </div>
+            <button id="next-lesson-btn" class="modal-btn primary-btn">Next Lesson</button>
+            <button id="retry-lesson-btn" class="modal-btn secondary-btn">Retry</button>
+        </div>
+    </div>
+
+    <!-- Canvas for Confetti -->
+    <canvas id="confetti-canvas"></canvas>
+
     <script src="keyboard.js"></script>
     <script src="lessons.js"></script>
+    <script src="confetti.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
