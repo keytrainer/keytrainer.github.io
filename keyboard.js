@@ -2,19 +2,19 @@
 
 const KEYBOARD_LAYOUT = [
     [
-        { id: 'Backquote', label: '`', finger: 'l-pinky' },
-        { id: 'Digit1', label: '1', finger: 'l-pinky' },
-        { id: 'Digit2', label: '2', finger: 'l-ring' },
-        { id: 'Digit3', label: '3', finger: 'l-middle' },
-        { id: 'Digit4', label: '4', finger: 'l-index' },
-        { id: 'Digit5', label: '5', finger: 'l-index' },
-        { id: 'Digit6', label: '6', finger: 'r-index' },
-        { id: 'Digit7', label: '7', finger: 'r-index' },
-        { id: 'Digit8', label: '8', finger: 'r-middle' },
-        { id: 'Digit9', label: '9', finger: 'r-ring' },
-        { id: 'Digit0', label: '0', finger: 'r-pinky' },
-        { id: 'Minus', label: '-', finger: 'r-pinky' },
-        { id: 'Equal', label: '=', finger: 'r-pinky' },
+        { id: 'Backquote', label: '`', sec: '~', finger: 'l-pinky' },
+        { id: 'Digit1', label: '1', sec: '!', finger: 'l-pinky' },
+        { id: 'Digit2', label: '2', sec: '@', finger: 'l-ring' },
+        { id: 'Digit3', label: '3', sec: '#', finger: 'l-middle' },
+        { id: 'Digit4', label: '4', sec: '$', finger: 'l-index' },
+        { id: 'Digit5', label: '5', sec: '%', finger: 'l-index' },
+        { id: 'Digit6', label: '6', sec: '^', finger: 'r-index' },
+        { id: 'Digit7', label: '7', sec: '&', finger: 'r-index' },
+        { id: 'Digit8', label: '8', sec: '*', finger: 'r-middle' },
+        { id: 'Digit9', label: '9', sec: '(', finger: 'r-ring' },
+        { id: 'Digit0', label: '0', sec: ')', finger: 'r-pinky' },
+        { id: 'Minus', label: '-', sec: '_', finger: 'r-pinky' },
+        { id: 'Equal', label: '=', sec: '+', finger: 'r-pinky' },
         { id: 'Backspace', label: 'Back', class: 'wide-3', finger: 'r-pinky' }
     ],
     [
@@ -29,9 +29,9 @@ const KEYBOARD_LAYOUT = [
         { id: 'KeyI', label: 'I', finger: 'r-middle' },
         { id: 'KeyO', label: 'O', finger: 'r-ring' },
         { id: 'KeyP', label: 'P', finger: 'r-pinky' },
-        { id: 'BracketLeft', label: '[', finger: 'r-pinky' },
-        { id: 'BracketRight', label: ']', finger: 'r-pinky' },
-        { id: 'Backslash', label: '\\', class: 'wide-1', finger: 'r-pinky' }
+        { id: 'BracketLeft', label: '[', sec: '{', finger: 'r-pinky' },
+        { id: 'BracketRight', label: ']', sec: '}', finger: 'r-pinky' },
+        { id: 'Backslash', label: '\\', sec: '|', class: 'wide-1', finger: 'r-pinky' }
     ],
     [
         { id: 'CapsLock', label: 'Caps', class: 'wide-2', finger: 'l-pinky' },
@@ -44,8 +44,8 @@ const KEYBOARD_LAYOUT = [
         { id: 'KeyJ', label: 'J', finger: 'r-index' },
         { id: 'KeyK', label: 'K', finger: 'r-middle' },
         { id: 'KeyL', label: 'L', finger: 'r-ring' },
-        { id: 'Semicolon', label: ';', finger: 'r-pinky' },
-        { id: 'Quote', label: "'", finger: 'r-pinky' },
+        { id: 'Semicolon', label: ';', sec: ':', finger: 'r-pinky' },
+        { id: 'Quote', label: "'", sec: '"', finger: 'r-pinky' },
         { id: 'Enter', label: 'Enter', class: 'wide-2', finger: 'r-pinky' }
     ],
     [
@@ -57,15 +57,43 @@ const KEYBOARD_LAYOUT = [
         { id: 'KeyB', label: 'B', finger: 'l-index' },
         { id: 'KeyN', label: 'N', finger: 'r-index' },
         { id: 'KeyM', label: 'M', finger: 'r-index' },
-        { id: 'Comma', label: ',', finger: 'r-middle' },
-        { id: 'Period', label: '.', finger: 'r-ring' },
-        { id: 'Slash', label: '/', finger: 'r-pinky' },
+        { id: 'Comma', label: ',', sec: '<', finger: 'r-middle' },
+        { id: 'Period', label: '.', sec: '>', finger: 'r-ring' },
+        { id: 'Slash', label: '/', sec: '?', finger: 'r-pinky' },
         { id: 'ShiftRight', label: 'Shift', class: 'wide-3', finger: 'r-pinky' }
     ],
     [
         { id: 'Space', label: 'Space', class: 'space', finger: 'thumb' }
     ]
 ];
+
+const CHAR_TO_KEY_MAP = {
+    '`': 'Backquote', '~': 'Backquote',
+    '1': 'Digit1', '!': 'Digit1',
+    '2': 'Digit2', '@': 'Digit2',
+    '3': 'Digit3', '#': 'Digit3',
+    '4': 'Digit4', '$': 'Digit4',
+    '5': 'Digit5', '%': 'Digit5',
+    '6': 'Digit6', '^': 'Digit6',
+    '7': 'Digit7', '&': 'Digit7',
+    '8': 'Digit8', '*': 'Digit8',
+    '9': 'Digit9', '(': 'Digit9',
+    '0': 'Digit0', ')': 'Digit0',
+    '-': 'Minus', '_': 'Minus',
+    '=': 'Equal', '+': 'Equal',
+    'q': 'KeyQ', 'w': 'KeyW', 'e': 'KeyE', 'r': 'KeyR', 't': 'KeyT', 'y': 'KeyY', 'u': 'KeyU', 'i': 'KeyI', 'o': 'KeyO', 'p': 'KeyP',
+    '[': 'BracketLeft', '{': 'BracketLeft',
+    ']': 'BracketRight', '}': 'BracketRight',
+    '\\': 'Backslash', '|': 'Backslash',
+    'a': 'KeyA', 's': 'KeyS', 'd': 'KeyD', 'f': 'KeyF', 'g': 'KeyG', 'h': 'KeyH', 'j': 'KeyJ', 'k': 'KeyK', 'l': 'KeyL',
+    ';': 'Semicolon', ':': 'Semicolon',
+    '\'': 'Quote', '"': 'Quote',
+    'z': 'KeyZ', 'x': 'KeyX', 'c': 'KeyC', 'v': 'KeyV', 'b': 'KeyB', 'n': 'KeyN', 'm': 'KeyM',
+    ',': 'Comma', '<': 'Comma',
+    '.': 'Period', '>': 'Period',
+    '/': 'Slash', '?': 'Slash',
+    ' ': 'Space'
+};
 
 function renderKeyboard(containerId) {
     const container = document.getElementById(containerId);
@@ -81,7 +109,18 @@ function renderKeyboard(containerId) {
             const keyEl = document.createElement('div');
             keyEl.className = `key ${key.finger} ${key.class || ''}`;
             keyEl.id = `key-${key.id}`;
-            keyEl.textContent = key.label;
+            
+            if (key.sec) {
+                const secEl = document.createElement('div');
+                secEl.className = 'sec-label';
+                secEl.textContent = key.sec;
+                keyEl.appendChild(secEl);
+            }
+            
+            const mainLabel = document.createElement('div');
+            mainLabel.textContent = key.label;
+            keyEl.appendChild(mainLabel);
+            
             rowEl.appendChild(keyEl);
         });
         
@@ -110,23 +149,31 @@ function setTargetKey(char) {
     
     if (!char) return;
     
-    let targetCode = null;
-    
-    if (char === ' ') {
-        targetCode = 'Space';
-    } else {
-        const upperChar = char.toUpperCase();
-        for (const row of KEYBOARD_LAYOUT) {
-            const key = row.find(k => k.label.toUpperCase() === upperChar);
-            if (key) {
-                targetCode = key.id;
-                break;
-            }
-        }
+    let isShiftNeeded = false;
+    if (char === char.toUpperCase() && char.toLowerCase() !== char.toUpperCase()) {
+        isShiftNeeded = true; // Uppercase letters
+    } else if ("~!@#$%^&*()_+{}|:\"<>?".includes(char)) {
+        isShiftNeeded = true; // Shifted symbols
     }
+    
+    let targetCode = CHAR_TO_KEY_MAP[char.toLowerCase()] || CHAR_TO_KEY_MAP[char];
     
     if (targetCode) {
         const keyEl = document.getElementById(`key-${targetCode}`);
-        if (keyEl) keyEl.classList.add('target');
+        if (keyEl) {
+            keyEl.classList.add('target');
+            
+            if (isShiftNeeded) {
+                // If main key is pressed with right hand, target left shift, else target right shift
+                let shiftCode = 'ShiftLeft';
+                if (keyEl.className.includes(' r-')) {
+                    shiftCode = 'ShiftLeft';
+                } else if (keyEl.className.includes(' l-')) {
+                    shiftCode = 'ShiftRight';
+                }
+                const shiftEl = document.getElementById(`key-${shiftCode}`);
+                if (shiftEl) shiftEl.classList.add('target');
+            }
+        }
     }
 }
