@@ -54,6 +54,16 @@ h1 {
     font-weight: 800;
     letter-spacing: -1px;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 4px 6px rgba(66, 153, 225, 0.4));
 }
 
 .home-row-guide {
