@@ -49,26 +49,37 @@ function startLesson(lessonId) {
     state.totalTyped = 0;
     state.isActive = true;
     
-    updateDisplay();
+    renderText();
+    updateCursor();
     updateStats();
     updateTargetKey();
 }
 
-function updateDisplay() {
+// Renders the text spans exactly ONCE per lesson
+function renderText() {
     elements.textDisplay.innerHTML = '';
-    
     for (let i = 0; i < state.text.length; i++) {
         const charSpan = document.createElement('span');
         charSpan.textContent = state.text[i];
         charSpan.className = 'char';
+        elements.textDisplay.appendChild(charSpan);
+    }
+}
+
+// Updates only the classes of existing spans, much faster!
+function updateCursor() {
+    const spans = elements.textDisplay.children;
+    for (let i = 0; i < spans.length; i++) {
+        const span = spans[i];
+        
+        // Remove old state classes
+        span.classList.remove('correct', 'current');
         
         if (i < state.currentIndex) {
-            charSpan.classList.add('correct');
+            span.classList.add('correct');
         } else if (i === state.currentIndex) {
-            charSpan.classList.add('current');
+            span.classList.add('current');
         }
-        
-        elements.textDisplay.appendChild(charSpan);
     }
     
     const progress = state.text.length > 0 ? (state.currentIndex / state.text.length) * 100 : 0;
@@ -130,9 +141,26 @@ function handleKeyDown(e) {
         highlightKey(e.code, 'correct');
         state.currentIndex++;
         
+        updateCursor();
+        updateStats();
+        updateTargetKey();
+        
         if (state.currentIndex >= state.text.length) {
             state.isActive = false;
             updateStats();
+            setTimeout(() => {
+                alert(`Lesson Completed!\n\nWPM: ${elements.wpmDisplay.textContent}\nAccuracy: ${elements.accuracyDisplay.textContent}\nMistakes: ${state.mistakes}`);
+                
+                // Go to next lesson if available
+                let nextLessonId = state.lessonId + 1;
+                const options = Array.from(elements.lessonSelect.options).map(o => parseInt(o.value));
+                if (options.includes(nextLessonId)) {
+                    elements.lessonSelect.value = nextLessonId;
+                    startLesson(nextLessonId);
+                } else {
+                    startLesson(state.lessonId); // Restart current if it's the last one
+                }
+            }, 100);
         }
     } else {
         highlightKey(e.code, 'incorrect');
@@ -145,11 +173,8 @@ function handleKeyDown(e) {
                 currentSpan.classList.remove('incorrect');
             }, 200);
         }
+        updateStats(); // Only update stats on mistake, no need to update cursor
     }
-    
-    updateDisplay();
-    updateStats();
-    updateTargetKey();
 }
 
 window.addEventListener('DOMContentLoaded', init);
