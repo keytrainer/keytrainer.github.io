@@ -17,13 +17,24 @@ const SENTENCES = [
     "Focus on accuracy before increasing speed."
 ];
 
+const CODE_SNIPPETS = [
+    "function add(a, b) { return a + b; }",
+    "const arr = [1, 2, 3]; arr.map(x => x * 2);",
+    "if (x === true) { console.log('Yes!'); }",
+    "document.getElementById('app').innerHTML = 'Hello';",
+    "let user = { name: 'John', age: 30 };",
+    "for (let i = 0; i < 10; i++) { sum += i; }",
+    "setTimeout(() => { alert('Done'); }, 1000);"
+];
+
 const LESSONS = {
     1: { type: 'random', chars: ['f', 'j'], length: 20 },
     2: { type: 'random', chars: ['f', 'j', 'd', 'k'], length: 25 },
     3: { type: 'random', chars: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'], length: 30 },
     4: { type: 'words', length: 35 },
     5: { type: 'sentences', length: 45 },
-    6: { type: 'random', chars: ['1','2','3','4','5','6','7','8','9','0','-','=','!','@','#','$','%','^','&','*','(',')','_','+','[',']','{','}','\\','|',';',':','\'','"',',','.','/','<','>','?'], length: 30 }
+    6: { type: 'random', chars: ['1','2','3','4','5','6','7','8','9','0','-','=','!','@','#','$','%','^','&','*','(',')','_','+','[',']','{','}','\\','|',';',':','\'','"',',','.','/','<','>','?'], length: 30 },
+    7: { type: 'code', length: 3 }
 };
 
 function generateLessonText(lessonId) {
@@ -32,7 +43,6 @@ function generateLessonText(lessonId) {
     
     if (lesson.type === 'words') {
         let wordsArr = [];
-        // Approximate length based on 5 chars per word
         for(let i=0; i < Math.max(5, lesson.length / 5); i++) {
             wordsArr.push(WORDS[Math.floor(Math.random() * WORDS.length)]);
         }
@@ -43,6 +53,12 @@ function generateLessonText(lessonId) {
             sentencesArr.push(SENTENCES[Math.floor(Math.random() * SENTENCES.length)]);
         }
         return sentencesArr.join(" ");
+    } else if (lesson.type === 'code') {
+        let codeArr = [];
+        for(let i=0; i<lesson.length; i++) {
+            codeArr.push(CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)]);
+        }
+        return codeArr.join(" ");
     }
     
     // random char logic

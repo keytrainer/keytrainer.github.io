@@ -38,9 +38,22 @@
                         <option value="4">Lesson 4: Real Words</option>
                         <option value="5">Lesson 5: Full Sentences</option>
                         <option value="6">Lesson 6: Numbers & Symbols</option>
+                        <option value="7">Lesson 7: Code (JavaScript)</option>
                     </select>
                 </div>
                 <button id="restart-btn">Restart Lesson</button>
+                
+                <div class="settings-panel">
+                    <h3>Settings</h3>
+                    <div class="toggle-group">
+                        <label>Dark Mode</label>
+                        <button id="theme-toggle" class="icon-btn">🌙</button>
+                    </div>
+                    <div class="toggle-group">
+                        <label>Sound</label>
+                        <button id="sound-toggle" class="icon-btn">🔇</button>
+                    </div>
+                </div>
             </aside>
 
             <section class="typing-area">
@@ -82,6 +95,7 @@
     <script src="keyboard.js"></script>
     <script src="lessons.js"></script>
     <script src="confetti.js"></script>
+    <script src="audio.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

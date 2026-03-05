@@ -25,7 +25,11 @@ const elements = {
     modalAcc: document.getElementById('modal-acc'),
     modalMistakes: document.getElementById('modal-mistakes'),
     nextLessonBtn: document.getElementById('next-lesson-btn'),
-    retryLessonBtn: document.getElementById('retry-lesson-btn')
+    retryLessonBtn: document.getElementById('retry-lesson-btn'),
+    
+    // Settings elements
+    themeToggle: document.getElementById('theme-toggle'),
+    soundToggle: document.getElementById('sound-toggle')
 };
 
 function init() {
@@ -63,6 +67,21 @@ function setupEventListeners() {
     elements.retryLessonBtn.addEventListener('click', () => {
         hideModal();
         startLesson(state.lessonId);
+    });
+    
+    // Settings toggles
+    elements.themeToggle.addEventListener('click', (e) => {
+        document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        e.target.textContent = document.body.dataset.theme === 'dark' ? '☀️' : '🌙';
+        e.target.blur();
+    });
+    
+    elements.soundToggle.addEventListener('click', (e) => {
+        if (typeof audio !== 'undefined') {
+            const isEnabled = audio.toggle();
+            e.target.textContent = isEnabled ? '🔊' : '🔇';
+        }
+        e.target.blur();
     });
 }
 
@@ -188,6 +207,7 @@ function handleKeyDown(e) {
     
     if (e.key === targetChar) {
         highlightKey(e.code, 'correct');
+        if (typeof audio !== 'undefined') audio.playClick();
         state.currentIndex++;
         
         updateCursor();
@@ -206,6 +226,7 @@ function handleKeyDown(e) {
         }
     } else {
         highlightKey(e.code, 'incorrect');
+        if (typeof audio !== 'undefined') audio.playError();
         state.mistakes++;
         
         const currentSpan = elements.textDisplay.children[state.currentIndex];

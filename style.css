@@ -421,3 +421,105 @@ button:active {
     z-index: 90;
 }
 
+
+/* SETTINGS & DARK MODE */
+.settings-panel {
+    margin-top: 20px;
+    border-top: 2px dashed #e2e8f0;
+    padding-top: 15px;
+}
+
+.settings-panel h3 {
+    font-size: 1.1em;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+}
+
+.toggle-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.toggle-group label {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.icon-btn {
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    font-size: 1.2em;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: none;
+    margin-top: 0;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background: #edf2f7;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Dark Mode Variables */
+body[data-theme="dark"] {
+    --bg-color: #1a202c;
+    --text-color: #f7fafc;
+    --primary-color: #63b3ed;
+    --primary-dark: #90cdf4;
+    --key-bg: #2d3748;
+    --key-border: #4a5568;
+    --key-shadow: #1a202c;
+    
+    /* Darker finger colors */
+    --l-pinky: #702459;
+    --l-ring: #7b341e;
+    --l-middle: #22543d;
+    --l-index: #234e52;
+    --r-index: #234e52;
+    --r-middle: #22543d;
+    --r-ring: #7b341e;
+    --r-pinky: #702459;
+    --thumb: #4a5568;
+}
+
+body[data-theme="dark"] .stats-panel,
+body[data-theme="dark"] .text-display,
+body[data-theme="dark"] .keyboard,
+body[data-theme="dark"] .modal-content {
+    background: rgba(45, 55, 72, 0.85);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+body[data-theme="dark"] .stat-label,
+body[data-theme="dark"] .lesson-selector label,
+body[data-theme="dark"] .home-row-guide,
+body[data-theme="dark"] .key {
+    color: #a0aec0;
+}
+
+body[data-theme="dark"] .key .sec-label {
+    color: #718096;
+}
+
+body[data-theme="dark"] select,
+body[data-theme="dark"] .icon-btn,
+body[data-theme="dark"] .secondary-btn {
+    background: #2d3748;
+    color: #f7fafc;
+    border-color: #4a5568;
+}
+
+body[data-theme="dark"] .char {
+    color: #4a5568;
+}
+
+body[data-theme="dark"] .char.correct {
+    color: #f7fafc;
+}
+
