@@ -533,3 +533,44 @@ body[data-theme="dark"] .char.correct {
     color: #f7fafc;
 }
 
+
+/* COMBO & HEATMAP STYLES */
+.combo-text {
+    transition: all 0.2s;
+}
+.combo-text.glow {
+    color: #ed8936;
+    text-shadow: 0 0 10px rgba(237, 137, 54, 0.6);
+    transform: scale(1.1);
+}
+body[data-theme='dark'] .combo-text.glow {
+    color: #fbd38d;
+    text-shadow: 0 0 10px rgba(251, 211, 141, 0.6);
+}
+
+.key.heatmap-low {
+    background-color: #fef08a !important;
+}
+.key.heatmap-med {
+    background-color: #f6ad55 !important;
+}
+.key.heatmap-high {
+    background-color: #fc8181 !important;
+}
+body[data-theme='dark'] .key.heatmap-low {
+    background-color: #975a16 !important;
+    color: white;
+}
+body[data-theme='dark'] .key.heatmap-med {
+    background-color: #c05621 !important;
+    color: white;
+}
+body[data-theme='dark'] .key.heatmap-high {
+    background-color: #c53030 !important;
+    color: white;
+}
+
+#heatmap-btn {
+    margin-top: 10px;
+    padding: 10px;
+}

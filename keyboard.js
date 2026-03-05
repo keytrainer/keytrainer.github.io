@@ -95,6 +95,11 @@ const CHAR_TO_KEY_MAP = {
     ' ': 'Space'
 };
 
+function getKeyId(char) {
+    if (!char) return null;
+    return CHAR_TO_KEY_MAP[char.toLowerCase()] || CHAR_TO_KEY_MAP[char];
+}
+
 function renderKeyboard(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;

@@ -7,17 +7,25 @@ const state = {
     mistakes: 0,
     totalTyped: 0,
     lessonId: 1,
-    isActive: false
+    isActive: false,
+    combo: 0,
+    maxCombo: 0,
+    bestWpm: 0,
+    errorMap: {},
+    heatmapActive: false
 };
 
 const elements = {
     textDisplay: document.getElementById('text-display'),
     wpmDisplay: document.getElementById('wpm'),
+    bestWpmDisplay: document.getElementById('best-wpm'),
+    comboDisplay: document.getElementById('combo'),
     accuracyDisplay: document.getElementById('accuracy'),
     mistakesDisplay: document.getElementById('mistakes'),
     progressBar: document.getElementById('progress-bar'),
     lessonSelect: document.getElementById('lesson-select'),
     restartBtn: document.getElementById('restart-btn'),
+    heatmapBtn: document.getElementById('heatmap-btn'),
     
     // Modal elements
     modalOverlay: document.getElementById('completion-modal'),
@@ -34,8 +42,25 @@ const elements = {
 
 function init() {
     renderKeyboard('keyboard');
+    loadStats();
     setupEventListeners();
     startLesson(1);
+}
+
+function loadStats() {
+    const savedBest = localStorage.getItem('typistBestWpm');
+    if (savedBest) {
+        state.bestWpm = parseInt(savedBest);
+        elements.bestWpmDisplay.textContent = state.bestWpm;
+    }
+}
+
+function saveStats(wpm) {
+    if (wpm > state.bestWpm) {
+        state.bestWpm = wpm;
+        elements.bestWpmDisplay.textContent = state.bestWpm;
+        localStorage.setItem('typistBestWpm', state.bestWpm);
+    }
 }
 
 function setupEventListeners() {
@@ -50,6 +75,13 @@ function setupEventListeners() {
         startLesson(state.lessonId);
         e.target.blur(); // Remove focus
     });
+    
+    if (elements.heatmapBtn) {
+        elements.heatmapBtn.addEventListener('click', (e) => {
+            toggleHeatmap();
+            e.target.blur();
+        });
+    }
     
     // Modal buttons
     elements.nextLessonBtn.addEventListener('click', () => {
@@ -106,7 +138,12 @@ function startLesson(lessonId) {
     state.startTime = null;
     state.mistakes = 0;
     state.totalTyped = 0;
+    state.combo = 0;
     state.isActive = true;
+    
+    if (state.heatmapActive) {
+        toggleHeatmap();
+    }
     
     renderText();
     updateCursor();
@@ -176,6 +213,14 @@ function updateStats() {
     }
 }
 
+function updateComboDisplay() {
+    elements.comboDisplay.textContent = state.combo;
+    if (state.combo > 0 && state.combo % 10 === 0) {
+        elements.comboDisplay.classList.add('glow');
+        setTimeout(() => elements.comboDisplay.classList.remove('glow'), 500);
+    }
+}
+
 function updateTargetKey() {
     if (state.currentIndex < state.text.length) {
         setTargetKey(state.text[state.currentIndex]);
@@ -210,6 +255,12 @@ function handleKeyDown(e) {
         if (typeof audio !== 'undefined') audio.playClick();
         state.currentIndex++;
         
+        state.combo++;
+        if (state.combo > state.maxCombo) {
+            state.maxCombo = state.combo;
+        }
+        updateComboDisplay();
+        
         updateCursor();
         updateStats();
         updateTargetKey();
@@ -217,6 +268,8 @@ function handleKeyDown(e) {
         if (state.currentIndex >= state.text.length) {
             state.isActive = false;
             updateStats();
+            saveStats(parseInt(elements.wpmDisplay.textContent) || 0);
+            
             setTimeout(() => {
                 if (typeof confetti !== 'undefined') {
                     confetti.start();
@@ -228,6 +281,14 @@ function handleKeyDown(e) {
         highlightKey(e.code, 'incorrect');
         if (typeof audio !== 'undefined') audio.playError();
         state.mistakes++;
+        state.combo = 0;
+        updateComboDisplay();
+        
+        // Record mistake for heatmap using the target key's ID
+        const targetId = getKeyId(targetChar);
+        if (targetId) {
+            state.errorMap[targetId] = (state.errorMap[targetId] || 0) + 1;
+        }
         
         const currentSpan = elements.textDisplay.children[state.currentIndex];
         if (currentSpan) {
@@ -237,6 +298,47 @@ function handleKeyDown(e) {
             }, 200);
         }
         updateStats(); // Only update stats on mistake, no need to update cursor
+    }
+}
+
+function toggleHeatmap() {
+    state.heatmapActive = !state.heatmapActive;
+    
+    // Clear old heatmap classes
+    document.querySelectorAll('.key').forEach(el => {
+        el.classList.remove('heatmap-low', 'heatmap-med', 'heatmap-high');
+    });
+    
+    if (state.heatmapActive) {
+        elements.heatmapBtn.textContent = "Hide Error Heatmap";
+        
+        let maxErrors = 0;
+        for (let key in state.errorMap) {
+            if (state.errorMap[key] > maxErrors) {
+                maxErrors = state.errorMap[key];
+            }
+        }
+        
+        if (maxErrors === 0) return; // No errors to show
+        
+        // Color keys based on error frequency
+        for (let key in state.errorMap) {
+            const count = state.errorMap[key];
+            const keyEl = document.getElementById(`key-${key}`);
+            if (keyEl) {
+                const ratio = count / maxErrors;
+                if (ratio > 0.66) {
+                    keyEl.classList.add('heatmap-high');
+                } else if (ratio > 0.33) {
+                    keyEl.classList.add('heatmap-med');
+                } else {
+                    keyEl.classList.add('heatmap-low');
+                }
+            }
+        }
+    } else {
+        elements.heatmapBtn.textContent = "Show Error Heatmap";
+        updateTargetKey(); // Restore target key if active
     }
 }
 
