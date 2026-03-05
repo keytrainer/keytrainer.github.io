@@ -69,16 +69,25 @@ function renderText() {
 // Updates only the classes of existing spans, much faster!
 function updateCursor() {
     const spans = elements.textDisplay.children;
-    for (let i = 0; i < spans.length; i++) {
-        const span = spans[i];
+    
+    // If it's the very beginning, just set the first character to current
+    if (state.currentIndex === 0 && spans.length > 0) {
+        for (let i = 0; i < spans.length; i++) {
+            spans[i].className = 'char'; // Reset all
+        }
+        spans[0].classList.add('current');
+    } else if (state.currentIndex > 0 && state.currentIndex <= spans.length) {
+        // Mark previous character as correct
+        const prevSpan = spans[state.currentIndex - 1];
+        if (prevSpan) {
+            prevSpan.classList.remove('current');
+            prevSpan.classList.add('correct');
+        }
         
-        // Remove old state classes
-        span.classList.remove('correct', 'current');
-        
-        if (i < state.currentIndex) {
-            span.classList.add('correct');
-        } else if (i === state.currentIndex) {
-            span.classList.add('current');
+        // Mark new character as current
+        const currentSpan = spans[state.currentIndex];
+        if (currentSpan) {
+            currentSpan.classList.add('current');
         }
     }
     
